@@ -21,6 +21,15 @@ class Service
         }
     }
 
+    public static function getAllServices(): array {
+        $services = [];
+        foreach (config('services') as $serviceID => $service) {
+            $services[$serviceID] = $service['name'];
+        }
+
+        return $services;
+    }
+
     public function getSupportedVersions(): array {
         return config($this->serviceConfigPrefix . '.versions');
     }

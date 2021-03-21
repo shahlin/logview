@@ -16,14 +16,11 @@ class Generator
     public const MARKDOWN_FORMAT = 'markdown';
     public const HTML_FORMAT = 'html';
 
-    public function __construct(private GeneratorPayload $generatorPayload)
-    {
-        $this->service = new Service($this->generatorPayload->serviceIdentifier);
-    }
+    public function __construct(private GeneratorPayload $generatorPayload) {}
 
     public function generate()
     {
-        $urls = $this->service->getURLsForVersions(
+        $urls = $this->generatorPayload->service->getURLsForVersions(
             $this->generatorPayload->fromVersion,
             $this->generatorPayload->toVersion
         );
