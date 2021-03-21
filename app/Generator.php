@@ -5,11 +5,16 @@ namespace App;
 
 
 use App\Exceptions\RequestFailureException;
+use App\Factories\MergerFactory;
+use App\Factories\WriterFactory;
 
 class Generator
 {
 
     private Service $service;
+
+    public const MARKDOWN_FORMAT = 'markdown';
+    public const HTML_FORMAT = 'html';
 
     public function __construct(private GeneratorPayload $generatorPayload)
     {
@@ -24,10 +29,10 @@ class Generator
         );
 
         $changeLogs = $this->getChangeLogs($urls);
-        $mergedChangeLogs = ChangeLogMerger::merge($changeLogs, $this->generatorPayload->format);
-        $writer = new Writer($mergedChangeLogs);
+        $merger = MergerFactory::get($this->generatorPayload->format);
+        $writer = WriterFactory::get($this->generatorPayload->format);
 
-        $writer->writeToMarkdown();
+        $writer->write($merger->merge($changeLogs));
     }
 
     private function getChangeLogs(array $urls): array {

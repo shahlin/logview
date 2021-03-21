@@ -11,7 +11,7 @@ class GeneratorPayload
         public string $serviceIdentifier,
         public string $fromVersion,
         public string $toVersion,
-        public string $format = Writer::MARKDOWN_FORMAT
+        public string $format = Generator::MARKDOWN_FORMAT
     ) {}
 
 }
