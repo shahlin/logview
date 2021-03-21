@@ -45,11 +45,15 @@ class Service
     private function getSupportedVersionsFromTo(string $fromVersion, string $toVersion): array
     {
         $supportedVersions = $this->getSupportedVersions();
-        if (!in_array($fromVersion, $supportedVersions) || !in_array($toVersion, $supportedVersions)) {
+        if (!in_array($fromVersion, $supportedVersions) || (!empty($toVersion) && !in_array($toVersion, $supportedVersions))) {
             throw new VersionNotSupportedException;
         }
 
-        return array_filter($this->getSupportedVersions(), function ($version) use ($fromVersion, $toVersion) {
+        if (empty($toVersion)) {
+            return [$fromVersion];
+        }
+
+        return array_filter($supportedVersions, function ($version) use ($fromVersion, $toVersion) {
             return $version >= $fromVersion && $version <= $toVersion;
         });
     }

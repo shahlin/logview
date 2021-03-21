@@ -37,9 +37,10 @@ class GenerateCommand extends Command
     public function handle()
     {
         $fromVersion = $this->option('from');
-        $toVersion = $this->option('to');
+        $toVersion = $this->option('to') ?? '';
 
-        if (!$this->validate($fromVersion, $toVersion)) {
+        if (empty($fromVersion)) {
+            $this->error('Please specify the version(s)');
             return;
         }
 
@@ -61,12 +62,4 @@ class GenerateCommand extends Command
         // $schedule->command(static::class)->everyMinute();
     }
 
-    private function validate($fromVersion, $toVersion) {
-        if (!$fromVersion || !$toVersion) {
-            $this->error('Please specify both from and to versions');
-            return false;
-        }
-
-        return true;
-    }
 }
