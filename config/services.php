@@ -2,6 +2,11 @@
 
 use App\Service;
 
+/**
+ * Notes:
+ * - URLs must be a direct link to the changelog
+ */
+
 return [
     'laravel' => [
         'name' => 'Laravel',
@@ -19,7 +24,7 @@ return [
         'versions' => [
             '0.4',
             '0.5',
-            '0.8'
+            '0.8',
         ]
     ]
 ];

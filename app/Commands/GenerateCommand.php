@@ -2,10 +2,10 @@
 
 namespace App\Commands;
 
+use App\Exceptions\ServiceNotFoundException;
 use App\Generator;
 use App\GeneratorPayload;
 use App\Service;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class GenerateCommand extends Command
@@ -16,9 +16,6 @@ class GenerateCommand extends Command
      * @var string
      */
     protected $signature = 'generate';
-//                            {service_id : Service identifier}
-//                            {--F|from= : Version to start the generation from}
-//                            {--T|to= : Version to generate the logs till}';
 
     /**
      * The description of the command.
@@ -30,7 +27,8 @@ class GenerateCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
+     * @throws ServiceNotFoundException
      */
     public function handle()
     {
@@ -38,16 +36,11 @@ class GenerateCommand extends Command
         $service = new Service($serviceIdentifier);
         $supportedVersions = $service->getSupportedVersions();
 
-        // Selection menu functions return index of the selected version
-        $fromVersion = $supportedVersions[$this->fromVersionSelectionMenu($supportedVersions)] ?? exit;
-        $toVersion = $this->toVersionSelectionMenu($supportedVersions, $fromVersion);
+        $fromVersion = $this->getFromVersionFromMenu($supportedVersions);
+        $toVersion = $this->getToVersionFromMenu($supportedVersions, $fromVersion);
+        $format = $this->formatSelectionMenu($service);
 
-        if (empty($fromVersion)) {
-            $this->error('Please specify the version(s)');
-            return;
-        }
-
-        $payload = new GeneratorPayload($service, $fromVersion, $toVersion);
+        $payload = new GeneratorPayload($service, $fromVersion, $toVersion, $format);
         $generator = new Generator($payload);
         $generator->generate();
 
@@ -58,17 +51,6 @@ class GenerateCommand extends Command
         }
 
         $this->info($successMessage);
-    }
-
-    /**
-     * Define the command's schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
-     * @return void
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
     }
 
     private function serviceSelectionMenu()
@@ -96,17 +78,46 @@ class GenerateCommand extends Command
         // Add none to support picking only fromVersion
         $listOfVersionsToDisplay['none'] = "None, generate single version changelog";
 
-        $toVersion = $this->menu('Select End Version', $listOfVersionsToDisplay)
+        return $this->menu('Select End Version', $listOfVersionsToDisplay)
             ->setBackgroundColour('23')
             ->setPadding(2)
             ->open();
+    }
 
-        if ($toVersion === 'none') {
+    private function formatSelectionMenu(Service $service) {
+        $formats = $service->getSupportedFormats();
+
+        $displayFormats = [];
+        foreach ($formats as $format) {
+            $displayFormats[$format] = ucwords($format);
+        }
+
+        if (empty($formats)) {
+            $this->error('Could not write changelog - Format not supported');
+            exit;
+        }
+
+        return $this->menu('Select Format', $displayFormats)
+            ->setBackgroundColour('23')
+            ->setPadding(2)
+            ->open();
+    }
+
+    private function getFromVersionFromMenu(array $supportedVersions): string {
+        $menuSelection = $this->fromVersionSelectionMenu($supportedVersions);
+
+        return $supportedVersions[$menuSelection] ?? exit;
+    }
+
+    private function getToVersionFromMenu(array $supportedVersions, string $fromVersion): string {
+        $menuSelection = $this->toVersionSelectionMenu($supportedVersions, $fromVersion);
+
+        if ($menuSelection === 'none') {
             $toVersion = '';
-        } else if (empty($toVersion)) {
+        } else if (empty($menuSelection)) {
             exit;
         } else {
-            $toVersion = $supportedVersions[$toVersion];
+            $toVersion = $supportedVersions[$menuSelection];
         }
 
         return $toVersion;

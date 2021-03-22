@@ -6,6 +6,7 @@ namespace App;
 
 use App\Exceptions\ServiceNotFoundException;
 use App\Exceptions\VersionNotSupportedException;
+use App\Factories\WriterFactory;
 
 class Service
 {
@@ -21,7 +22,8 @@ class Service
         }
     }
 
-    public static function getAllServices(): array {
+    public static function getAllServices(): array
+    {
         $services = [];
         foreach (config('services') as $serviceID => $service) {
             $services[$serviceID] = $service['name'];
@@ -34,9 +36,21 @@ class Service
         return config($this->serviceConfigPrefix . '.versions');
     }
 
+    public function getSupportedFormats(): array
+    {
+        $givenFormat = $this->getBaseURLFormat();
+
+        return WriterFactory::WRITABLE_FORMATS[$givenFormat] ?? [];
+    }
+
     public function getBaseURL(): string
     {
         return config($this->serviceConfigPrefix . '.url');
+    }
+
+    public function getBaseURLFormat(): string {
+        $url = $this->getBaseURL();
+        return substr($url, strrpos($url, '.') + 1);
     }
 
     public function getURLsForVersions(string $fromVersion, string $toVersion): array {
