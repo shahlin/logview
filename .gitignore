@@ -4,6 +4,6 @@
 /.vagrant
 .phpunit.result.cache
 composer.lock
-output.md
+output.*
 .DS_STORE
 .editorconfig

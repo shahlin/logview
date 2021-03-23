@@ -6,6 +6,7 @@ namespace App\Factories;
 
 use App\Contracts\Writer;
 use App\Generator;
+use App\Writers\HTMLWriter;
 use App\Writers\MarkdownWriter;
 
 class WriterFactory
@@ -18,7 +19,8 @@ class WriterFactory
 
     public static function get(string $format): Writer {
         return match ($format) {
-            Generator::MARKDOWN_FORMAT => new (MarkdownWriter::class)
+            Generator::MARKDOWN_FORMAT => new (MarkdownWriter::class),
+            Generator::HTML_FORMAT => new (HTMLWriter::class),
         };
     }
 

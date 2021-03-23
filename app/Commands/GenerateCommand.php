@@ -51,6 +51,7 @@ class GenerateCommand extends Command
         }
 
         $this->info($successMessage);
+        $this->info('Saved to output.' . $format);
     }
 
     private function serviceSelectionMenu()

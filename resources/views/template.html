@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Changelogs</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                color: #333;
+                background-color: #005f5f;
+                font-family: Roboto;
+            }
+
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 50px;
+                margin-bottom: 30px;
+                color: #fff;
+            }
+
+            h1 {
+                font-weight: 500;
+            }
+
+            h2 {
+                font-weight: 400;
+            }
+
+            h3 {
+                font-weight: 600;
+            }
+
+            a {
+                color: #005f5f;
+                padding-bottom: 3px;
+                text-decoration: none;
+            }
+
+            code {
+                background-color: rgb(250, 250, 250);
+                padding: 4px;
+            }
+
+            .container {
+                max-width: 70%;
+                margin: 0 auto;
+            }
+
+            .social-links a {
+                font-size: 20px;
+                margin-left: 30px;
+                color: #fff;
+            }
+
+            .social-links a:hover {
+                border-bottom: 1px solid #fff;
+            }
+
+            #changelogs {
+                padding: 50px;
+                margin-bottom: 60px;
+                background-color: #fff;
+                border-radius: 10px;
+                min-height: 100px;
+            }
+
+            #changelogs h1 {
+                margin-bottom: 30px;
+            }
+
+            #changelogs h2 {
+                color: #333;
+                margin: 30px 0;
+                padding-bottom: 15px;
+                padding-top: 15px;
+                border-bottom: 3px dotted #f3f3f3;
+                border-top: 3px dotted #f3f3f3;
+            }
+
+            #changelogs ul {
+                margin-bottom: 20px;
+            }
+
+            #changelogs ul li {
+                margin-top: 10px;
+            }
+
+            #changelogs a:hover {
+                border-bottom: 1px solid #005f5f;
+            }
+
+            footer {
+                width: 100%;
+                text-align: center;
+                color: #fff;
+                margin-bottom: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="container">
+            <header>
+                <h1>Changelogs</h1>
+                <div class="social-links">
+                    <span><a href="https://github.com/shahlin"><i class="fab fa-github"></i></a></span>
+                    <span><a href="https://twitter.com/Shahlin_ibrahim"><i class="fab fa-twitter"></i></a></span>
+                </div>
+            </header>
+            <div id="changelogs">{{changelog_data}}</div>
+
+            <footer>
+                By <b>Shahlin Ibrahim</b>
+            </footer>
+        </main>
+    </body>
+</html>
