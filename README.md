@@ -10,7 +10,7 @@ I wanted to migrate a project from a way older version to the latest one availab
 
 _Late realization_: Many changelog files already list down previous version changes within the same changelog. But it doesn't always list **all** versions though, so I guess I can still make use of the merge functionality.
 
-![Logview usage sample](https://media.giphy.com/media/F5hd6aHmylGqBjGUAy/giphy.gif)
+![Logview usage sample](https://media4.giphy.com/media/F0cPLTtgUKEVUZhOrC/giphy.gif)
 
 # Usage
 
